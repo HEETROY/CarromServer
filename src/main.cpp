@@ -1,8 +1,40 @@
 #include <iostream>
+
+/* This toolbox contains socket functions.
+A socket is like a telephone wire between two computers.
+Functions from this toolbox:
+socket()
+bind()
+listen()
+accept()
+recv()
+send()
+These let computers talk to each other. */
 #include <sys/socket.h>
+
+/* This toolbox contains internet address structures.
+It lets you describe things like: 
+IP address
+Port
+Protocol
+Example structure used later: sockaddr_in */
 #include <netinet/in.h>
+
+/* This toolbox contains operating system commands.
+Example: close() Which closes a connection. */
 #include <unistd.h>
+
+/* This toolbox helps work with raw memory.
+Examples: memcpy, memset. 
+You don’t use it heavily yet, but it’s common in networking. */
 #include <cstring>
+
+/*This toolbox contains IP address conversion tools.
+Example function used in your code: 
+inet_ntop()
+Which converts a binary IP into something readable like:
+127.0.0.1 */
+#include <arpa/inet.h>
 
 #include "packet.hpp"
 #include "packet_types.hpp"
@@ -13,16 +45,25 @@
 
 int main()
 {
-    int serverSocket;
-    int clientSocket;
+    int serverSocket; // phone number of your server
+    int clientSocket; // phone call connection to a player
 
-    struct sockaddr_in serverAddr{};
-    struct sockaddr_in clientAddr{};
+    /* sockaddr_in contains:
+     IP address
+     Port
+     Protocol */
+    struct sockaddr_in serverAddr{}; // server's location
+    struct sockaddr_in clientAddr{}; // player's location
+
+    // socklen_t → type used for address size
     socklen_t clientSize = sizeof(clientAddr);
 
     char buffer[1024];
 
-    // Create socket
+    /* Create socket
+     AF_INET means Use IPv4 internet addresses,
+     SOCK_STREAM means Use TCP protocol
+     0 means Use default protocol for TCP */
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 
     if (serverSocket < 0)
@@ -65,7 +106,12 @@ int main()
             continue;
         }
 
-        std::cout << "Client connected\n";
+        char clientIP[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &clientAddr.sin_addr, clientIP, INET_ADDRSTRLEN);
+
+        std::cout << "[CONNECT] Client connected from " << clientIP << std::endl;
+
+        // std::cout << "Client connected\n";
 
         /* Connect single, Receive single msg and close connection start */
 //        int bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
@@ -132,6 +178,13 @@ int main()
             PacketHeader header;
 
             int headerBytes = recv(clientSocket, &header, sizeof(PacketHeader), 0);
+            header.size = ntohs(header.size);
+
+            std::cout << "[PACKET] Received header -> Size: "
+                      << header.size
+                      << " Type: "
+                      << (int)header.type
+                      << std::endl;
 
             if (headerBytes <= 0)
             {
@@ -167,6 +220,12 @@ int main()
                     std::cout << "Angle: " << strike->angle << std::endl;
                     std::cout << "Power: " << strike->power << std::endl;
                     break;
+                }
+                default:
+                {
+                    std::cout << "[WARNING] Unknown packet type: "
+                              << (int)header.type
+                              << std::endl;
                 }
             }
         }
