@@ -111,68 +111,6 @@ int main()
 
         std::cout << "[CONNECT] Client connected from " << clientIP << std::endl;
 
-        // std::cout << "Client connected\n";
-
-        /* Connect single, Receive single msg and close connection start */
-//        int bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
-//
-//        if (bytesReceived > 0)
-//        {
-//            std::cout << "Received " << bytesReceived << " bytes\n";
-//        }
-//
-//        close(clientSocket);
-        /* Connect single, Receive single msg and close connection close */
-        
-        /* Connect single, keep receiving and close connection on client leave start */
-//        while (true)
-//        {
-//            int bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
-//
-//            if (bytesReceived <= 0)
-//            {
-//                std::cout << "Client disconnected\n";
-//                break;
-//            }
-//
-//            std::cout << "Received " << bytesReceived << " bytes\n";
-//        }
-        /* Connect single, keep receiving and close connection on client leave close */
-        
-        /* Connect Single, Keep Receving and packet support start */
-//        while (true)
-//        {
-//            uint16_t packetSize;
-//
-//            int sizeBytes = recv(clientSocket, &packetSize, sizeof(packetSize), 0);
-//
-//            if (sizeBytes <= 0)
-//            {
-//                std::cout << "Client disconnected\n";
-//                break;
-//            }
-//
-//            packetSize = ntohs(packetSize);
-//
-//            char packetBuffer[1024];
-//
-//            int bytesReceived = recv(clientSocket, packetBuffer, packetSize, 0);
-//
-//            if (bytesReceived <= 0)
-//            {
-//                std::cout << "Packet read failed\n";
-//                break;
-//            }
-//
-//            std::cout << "Received packet of size: " << packetSize << std::endl;
-//
-//            uint8_t packetType = packetBuffer[0];
-//
-//            std::cout << "Packet type: " << (int)packetType << std::endl;
-//        }
-        /* Connect Single, Keep Receving and packet support close */
-        
-        /* Connect Single, Keep Receving and packet reading support start */
         while (true)
         {
             PacketHeader header;
@@ -229,8 +167,7 @@ int main()
                 }
             }
         }
-        /* Connect Single, Keep Receving and packet reading support close */
-        
+
         
     }
 
