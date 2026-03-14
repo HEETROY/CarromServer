@@ -40,19 +40,23 @@ Which converts a binary IP into something readable like:
 #include "packet_types.hpp"
 #include "join_packet.hpp"
 #include "strike_packet.hpp"
+#include "includes/network/server.hpp"
 
 #define PORT 3000
 
 int main()
 {
-    int serverSocket; // phone number of your server
+    Server server(PORT);
+    server.Start();
+    int serverSocket = server.GetServerSocket(); // phone number of your server
+    // int serverSocket; // phone number of your server
     int clientSocket; // phone call connection to a player
 
     /* sockaddr_in contains:
      IP address
      Port
      Protocol */
-    struct sockaddr_in serverAddr{}; // server's location
+    // struct sockaddr_in serverAddr{}; // server's location
     struct sockaddr_in clientAddr{}; // player's location
 
     // socklen_t → type used for address size
@@ -60,57 +64,57 @@ int main()
 
     char buffer[1024];
 
-    /* Create socket
-     AF_INET means Use IPv4 internet addresses,
-     SOCK_STREAM means Use TCP protocol (TCP = reliable connection (like a phone call).)
-     0 means Use default protocol for TCP */
-    serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+    // /* Create socket
+    //  AF_INET means Use IPv4 internet addresses,
+    //  SOCK_STREAM means Use TCP protocol (TCP = reliable connection (like a phone call).)
+    //  0 means Use default protocol for TCP */
+    // serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 
-    /* If the socket fails to create, it returns negative.
-     So this checks for failure. */
-    if (serverSocket < 0)
-    {
-        std::cout << "Socket creation failed\n";
-        return 1;
-    }
+    // /* If the socket fails to create, it returns negative.
+    //  So this checks for failure. */
+    // if (serverSocket < 0)
+    // {
+    //     std::cout << "Socket creation failed\n";
+    //     return 1;
+    // }
 
-    std::cout << "Socket created\n";
+    // std::cout << "Socket created\n";
 
-    /* Configure server address
-     Defines: address type = IPv4 */
-    serverAddr.sin_family = AF_INET;
+    // /* Configure server address
+    //  Defines: address type = IPv4 */
+    // serverAddr.sin_family = AF_INET;
 
-    /* sin_port = port number.
-     htons() means: Host To Network Short
-     It converts numbers to network byte order.
-     Networking uses big-endian format.*/
-    serverAddr.sin_port = htons(PORT);
+    // /* sin_port = port number.
+    //  htons() means: Host To Network Short
+    //  It converts numbers to network byte order.
+    //  Networking uses big-endian format.*/
+    // serverAddr.sin_port = htons(PORT);
 
-    /* This means: Accept connections from any IP
-     Example: localhost, 192.168.x.x, internet */
-    serverAddr.sin_addr.s_addr = INADDR_ANY;
+    // /* This means: Accept connections from any IP
+    //  Example: localhost, 192.168.x.x, internet */
+    // serverAddr.sin_addr.s_addr = INADDR_ANY;
 
-    /* Bind means: Attach the socket to the port. 
-     Before bind: Socket exists, But has no address 
-     After bind: Socket listens on port 3000 */
-    if (bind(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) < 0)
-    {
-        std::cout << "Bind failed\n";
-        return 1;
-    }
+    // /* Bind means: Attach the socket to the port. 
+    //  Before bind: Socket exists, But has no address 
+    //  After bind: Socket listens on port 3000 */
+    // if (bind(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) < 0)
+    // {
+    //     std::cout << "Bind failed\n";
+    //     return 1;
+    // }
 
-    std::cout << "Bind successful\n";
+    // std::cout << "Bind successful\n";
 
-    /* Listening 
-     This tells the OS: Start accepting connections 
-     10 means: Maximum 10 clients waiting in line. */
-    if (listen(serverSocket, 10) < 0)
-    {
-        std::cout << "Listen failed\n";
-        return 1;
-    }
+    // /* Listening 
+    //  This tells the OS: Start accepting connections 
+    //  10 means: Maximum 10 clients waiting in line. */
+    // if (listen(serverSocket, 10) < 0)
+    // {
+    //     std::cout << "Listen failed\n";
+    //     return 1;
+    // }
 
-    std::cout << "Server listening on port " << PORT << std::endl;
+    // std::cout << "Server listening on port " << PORT << std::endl;
 
     /* Means: Run forever. Game servers never stop. */
     while (true)
@@ -212,6 +216,6 @@ int main()
 
         
     }
-
+    
     return 0;
 }

@@ -4,5 +4,5 @@ project(CarromServer
         DESCRIPTION "My First Raw Socket C++ Server Build Using CMake For the first time"
         LANGUAGES CXX)
 
-add_executable(server main.cpp)
+add_executable(server main.cpp network/server.cpp)
 target_include_directories(server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes)
