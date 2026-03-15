@@ -33,4 +33,6 @@ public:
 
     bool Start();
     int GetServerSocket();
+    void Run();
+    // void AcceptSingleClient();
 };

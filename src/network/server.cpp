@@ -112,7 +112,39 @@ bool Server::StartListening()
     return true;
 }
 
-int Server::GetServerSocket()
+int Server::GetServerSocket() { return serverSocket; }
+
+void Server::Run()
 {
-    return this->serverSocket;
+    while (true)
+    {
+        // this->AcceptSingleClient();
+    }
 }
+
+// void Server::AcceptSingleClient()
+// {
+//     sockaddr_in clientAddr();
+
+//         /* Accepting a client 
+//          This means: Wait for a player to connect.
+//          When a player connects:
+//          serverSocket = listening phone
+//          clientSocket = actual call connection 
+//         */
+//         int clientSocket = accept(serverSocket, (sockaddr*)&clientAddr, &clientSize);
+
+//         if (clientSocket < 0)
+//         {
+//             std::cout << "Client connection failed\n";
+//             return;
+//         }
+
+//         char clientIP[INET_ADDRSTRLEN];
+//         /* Converting client IP 
+//          This converts the binary IP into text.
+//          Example result: 127.0.0.1 */
+//         inet_ntop(AF_INET, &clientAddr.sin_addr, clientIP, INET_ADDRSTRLEN);
+
+//         std::cout << "[CONNECT] Client connected from " << clientIP << std::endl;
+// }
